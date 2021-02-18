@@ -6,9 +6,14 @@
 		<h1 class="monospace">
 			{{ venue.name }}
 		</h1>
+		<button class="btn btn-warning" id="delete-btn">DELETE THIS Venue</button>
+		<p id="venid" style="visibility: hidden;">
+			{{ venue.id }}
+		</p>
 		<p class="subtitle">
 			ID: {{ venue.id }}
 		</p>
+		<p style="visibility: hidden;" id="hiddenid">{{venue.id}}</p>
 		<div class="genres">
 			{% for genre in venue.genres %}
 			<span class="genre">{{ genre }}</span>
@@ -74,6 +79,27 @@
 		{% endfor %}
 	</div>
 </section>
+
+<script>
+	const delbtn = document.getElementById('delete-btn')
+	const id = document.getElementById('venid').innerHTML
+	delbtn.onclick=(e)=>{
+		e.preventDefault();
+		fetch(`/venues/${id}`,{
+			method:"DELETE",
+			redirect:"follow"
+		})
+		.then((response)=>{
+			if (response.redirected) {
+				window.location.href = response.url;
+			}
+		})
+		.catch(err=>console.log(err))
+	}
+
+
+
+</script>
 
 {% endblock %}
 
